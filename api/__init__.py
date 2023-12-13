@@ -3,14 +3,14 @@ from flask import Flask
 from flask_restful import Api
 
 # Custom Modules Imports
-from .config import AppConfig
+from .config import DevApiConfig, ProdApiConfig
 from .routes.home import Home
 from .routes.tapes import Tapes
 from .routes.tape import Tape
 
 # App and API Initialization
 app = Flask(__name__)
-app.config.from_object(AppConfig)
+app.config.from_object(DevApiConfig)
 api = Api(app)
 
 # API Route Definitions
