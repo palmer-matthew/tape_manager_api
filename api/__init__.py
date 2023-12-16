@@ -1,6 +1,7 @@
 # Module Imports
 from flask import Flask
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
 # Custom Modules Imports
 from .config import DevApiConfig, ProdApiConfig
@@ -11,6 +12,7 @@ from .routes.tape import Tape
 # App and API Initialization
 app = Flask(__name__)
 app.config.from_object(DevApiConfig)
+db = SQLAlchemy(app)
 api = Api(app)
 
 # API Route Definitions
