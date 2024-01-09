@@ -4,7 +4,8 @@ from pytz import timezone
 
 class TapeMedia(db.Model):
     __tablename__ = 'media'
-    media_id = db.Column(db.String(8), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    media_id = db.Column(db.String(8), unique=True, nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     modified_date = db.Column(db.DateTime, nullable=False, onupdate=datetime.utcnow)
     site = db.Column(db.String(50), nullable = False)
