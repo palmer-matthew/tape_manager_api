@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 # Custom Modules Imports
 from .config import DevApiConfig, ProdApiConfig
@@ -14,6 +15,7 @@ app = Flask(__name__)
 app.config.from_object(DevApiConfig)
 db = SQLAlchemy(app)
 api = Api(app)
+migrate = Migrate(app, db)
 
 # API Route Definitions
 api.add_resource(Home, '/api')
