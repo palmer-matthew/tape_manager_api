@@ -17,6 +17,9 @@ db = SQLAlchemy(app)
 api = Api(app)
 migrate = Migrate(app, db)
 
+# Importing DB Models
+from .models import tape
+
 # API Route Definitions
 api.add_resource(Home, '/api')
 api.add_resource(Tapes, '/api/tapes')
