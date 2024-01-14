@@ -28,5 +28,10 @@ class TapeMedia(db.Model):
             'compartment': self.compartment
         }
     
+    def to_basic_json(self) -> dict:
+        return {
+            'media_id': self.media_id
+        }
+    
     def __repr__(self) -> str:
         return '<Media %s>' % self.media_id
