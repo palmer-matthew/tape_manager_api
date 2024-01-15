@@ -71,6 +71,7 @@ def query_db_no_search(page, per_page):
                 'page': db_results.page,
                 'total_pages': db_results.pages
             },
+            'message': 'Records were found successfully',
             'code': 200
         }
     else:
