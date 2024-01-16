@@ -9,6 +9,7 @@ from .config import DevApiConfig, ProdApiConfig
 from .routes.home import Home
 from .routes.tapes import Tapes
 from .routes.tape import Tape
+from .routes.tape_id import TapeID
 
 # App and API Initialization
 app = Flask(__name__)
@@ -23,4 +24,5 @@ from .models import tape
 # API Route Definitions
 api.add_resource(Home, '/api')
 api.add_resource(Tapes, '/api/tapes')
-api.add_resource(Tape, '/api/tape/<string:id>')
+api.add_resource(Tape, '/api/tape')
+api.add_resource(TapeID, '/api/tape/<string:id>')
