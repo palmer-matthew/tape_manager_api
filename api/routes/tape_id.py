@@ -56,7 +56,7 @@ class TapeID(Resource):
             if id is None:
                 return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
             
-            result = patch_tape_media(id)
+            result = delete_tape_media(id)
             
             return result, result['code']
         except:
@@ -106,5 +106,21 @@ def patch_tape_media(id, body_args):
         'code': 200
     }
 
-def delete_tape_media():
-    pass
+def delete_tape_media(id):
+    db_result = TapeMedia.query.filter_by(media_id = id).first()
+    if db_result is None:
+        return {
+            'result' : {},
+            'additional': {},
+            'message': 'No records were found',
+            'code': 204
+        }
+    db.session.delete(db_result)
+    db.session.commit()
+    return {
+        'result' : {},
+        'additional': {},
+        'message': 'Record was deleted successfully',
+        'code': 200
+    }
+
