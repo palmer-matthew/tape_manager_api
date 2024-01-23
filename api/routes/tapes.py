@@ -31,6 +31,9 @@ class Tapes(Resource):
                 'message': 'Something went wrong.',
                 'code': 500
             } , 500
+    
+    def post(self):
+        pass
 
 def query_db_with_search(page, per_page, searchTerm: str):
 

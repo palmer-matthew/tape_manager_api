@@ -6,10 +6,9 @@
 
 from argparse import ArgumentParser
 from csv import DictReader
+from datetime import datetime
 from dotenv import dotenv_values
 from mysql.connector import connection as packageConnection, errorcode
-import json, csv, os
-from datetime import datetime
 
 class DatabaseConnection:
     def __init__(self, config:dict):
@@ -54,9 +53,6 @@ def read_csv(path: str):
             del row['']
             rows.append(row)
     return rows
-
-def update_database_with_record(record, statement):
-    pass
 
 def create_db_queries_file(data):
     TABLES = ['media']
