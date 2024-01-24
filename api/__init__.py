@@ -6,10 +6,7 @@ from flask_migrate import Migrate
 
 # Custom Modules Imports
 from .config import DevApiConfig, ProdApiConfig
-from .routes.home import Home
-from .routes.tapes import Tapes
-from .routes.tape import Tape
-from .routes.tape_id import TapeID
+
 
 # App and API Initialization
 app = Flask(__name__)
@@ -18,8 +15,12 @@ db = SQLAlchemy(app)
 api = Api(app)
 migrate = Migrate(app, db)
 
-# Importing DB Models
+# Importing DB Models and routes
 from .models import tape
+from .routes.home import Home
+from .routes.tapes import Tapes
+from .routes.tape import Tape
+from .routes.tape_id import TapeID
 
 # API Route Definitions
 api.add_resource(Home, '/api')
