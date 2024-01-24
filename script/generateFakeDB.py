@@ -8,12 +8,12 @@ LOCATION = ['Cabinet 1', 'Cabinet 2', 'Cabinet 3', 'Tape Library']
 COMPARTMENT = ['Drawer 1', 'Drawer 2', 'Drawer 3', 'Module 1', 'Module 2']
 
 def create_db_queries_file(data):
-    INSERT_SMT = 'INSERT INTO media(mediaID, creationDate, modifiedDate, site, location, compartment) VALUES("%s", "%s", "%s", "%s", "%s", "%s");\r'
+    INSERT_SMT = 'INSERT INTO media(media_id, created_date, modified_date, site, location, compartment) VALUES("%s", "%s", "%s", "%s", "%s", "%s");\r'
     try:
         with open('./query.sql', 'w') as ptr:
             newline = '\r'
 
-            ptr.write("USE tapeManager;\r")
+            ptr.write("USE tape_manager;\r")
 
             ptr.write(newline)
 
@@ -38,7 +38,6 @@ def pick_random_site():
 
 def main():
     fake_generator = Faker()
-    fake_generator.seed(0)
     media = []
 
     for i in range(random.randint(0, 100)):
