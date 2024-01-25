@@ -7,16 +7,16 @@ class TapeMedia(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     media_id = db.Column(db.String(8), unique=True, nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    modified_date = db.Column(db.DateTime, nullable=False, onupdate=datetime.utcnow)
+    modified_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     site = db.Column(db.String(50), nullable = False)
     location = db.Column(db.String(50), nullable = False)
     compartment = db.Column(db.String(50), nullable = False)
 
     def __init__(self,media_id: str, site: str, location: str, compartment: str) -> None:
-        self.media_id = media_id
-        self.site = site
-        self.location = location
-        self.compartment = compartment
+        self.media_id = media_id.upper()
+        self.site = site.upper()
+        self.location = location.upper()
+        self.compartment = compartment.upper()
 
     def to_json(self) -> dict:
         return {

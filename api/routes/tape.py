@@ -1,26 +1,13 @@
 from flask_restful import Resource, reqparse
 from api import db
 from api.models.tape import TapeMedia
-
-EMPTY_STATUS_CODE = {
-    'result' : [],
-    'additional': {},
-    'message': 'Something went wrong.',
-    'code': 500
-} 
-
-BAD_STATUS_CODE = {
-    'result' : [],
-    'additional': {},
-    'message': 'Request is Invalid',
-    'code': 400
-} 
+from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE
 
 paramParser = reqparse.RequestParser()
-paramParser.add_argument('id', type=str, location='form')
-paramParser.add_argument('site', type=str, location='form')
-paramParser.add_argument('location', type=str, location='form')
-paramParser.add_argument('compartment', type=str, location='form')
+paramParser.add_argument('id', type=str, location='json')
+paramParser.add_argument('site', type=str, location='json')
+paramParser.add_argument('location', type=str, location='json')
+paramParser.add_argument('compartment', type=str, location='json')
 
 class Tape(Resource):
     def put(self):
@@ -28,7 +15,7 @@ class Tape(Resource):
             params = paramParser.parse_args()
 
             for param in params.keys():
-                if params[param] is None:
+                if not params[param]:
                     return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
 
             new_record = TapeMedia(media_id=params['id'],site=params['site'],location=params['location'],compartment=params['compartment'])
@@ -45,4 +32,4 @@ class Tape(Resource):
 
             return result, result['code']
         except:
-            return EMPTY_STATUS_CODE, EMPTY_STATUS_CODE['code']
+            return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
