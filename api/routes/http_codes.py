@@ -1,3 +1,4 @@
+#HTTP Response templates
 INTERNAL_ERROR_STATUS_CODE = {
     'result' : [],
     'additional': {},
