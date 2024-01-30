@@ -21,8 +21,8 @@ class TapeMedia(db.Model):
     def to_json(self) -> dict:
         return {
             'media_id': self.media_id,
-            'created_date': self.created_date,
-            'modified_date': self.modified_date,
+            # 'created_date': self.created_date.strftime("%M/%S/%Y"),
+            # 'modified_date': self.modified_datestrftime("%M/%S/%Y"),
             'site': self.site,
             'location': self.location,
             'compartment': self.compartment

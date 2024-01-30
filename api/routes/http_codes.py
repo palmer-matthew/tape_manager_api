@@ -24,3 +24,17 @@ EMPTY_STATUS_CODE = {
     'message': 'No records were found',
     'code': 204
 }
+
+NO_CONTENT_CODE = {
+    'result' : {},
+    'additional': {},
+    'message': 'No records were found',
+    'code': 204
+}
+
+NO_UPDATE_CONTENT_CODE = {
+    'result' : {},
+    'additional': {},
+    'message': 'No records were updated',
+    'code': 204
+}
