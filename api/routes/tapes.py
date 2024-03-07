@@ -8,10 +8,11 @@ paramParser.add_argument('page', type=int, location='args')
 paramParser.add_argument('per_page', type=int, location='args')
 paramParser.add_argument('search', type=str, location='args')
 
+putParser = reqparse.RequestParser()
+putParser.add_argument('records', required=True, type=list, location='json')
 
 class Tapes(Resource):
     def get(self):
-        #TODO: Implement Error Logging in GET Route
         try:
             params = paramParser.parse_args()
 
@@ -30,8 +31,18 @@ class Tapes(Resource):
         except:
             return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
     
-    def post(self):
-        pass
+    def put(self):
+        try:
+            params = putParser.parse_args()
+
+            if params['records'] is None or params['records'] == []:
+                return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+
+            result = batch_upload_tapes(params['records'])
+
+            return result , result['code']
+        except:
+            return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
 
     def patch(self):
         pass
@@ -39,7 +50,7 @@ class Tapes(Resource):
 def query_db_with_search(page, per_page, searchTerm: str):
 
     try:
-        db_results = TapeMedia.query.filter(TapeMedia.media_id.startswith(searchTerm.upper())).paginate(page=page, per_page=per_page)
+        db_results = TapeMedia.query.filter(TapeMedia.media_id.contains(searchTerm.upper())).paginate(page=page, per_page=per_page)
     except :
         return EMPTY_STATUS_CODE
 
@@ -82,3 +93,20 @@ def query_db_no_search(page, per_page):
         }
     else:
         return EMPTY_STATUS_CODE
+    
+def batch_upload_tapes(records: list):
+    pass
+    # results = []
+    # db_results = {}
+    # per_page = 1
+    # return {
+    #     'result' : results,
+    #     'additional': {
+    #         'length': len(results),
+    #         'page': db_results.page,
+    #         'total_pages': db_results.pages,
+    #         'per_page': per_page
+    #     },
+    #     'message': 'Records were found successfully',
+    #     'code': 200
+    # }

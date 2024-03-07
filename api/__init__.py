@@ -21,9 +21,11 @@ from .routes.home import Home
 from .routes.tapes import Tapes
 from .routes.tape import Tape
 from .routes.tape_id import TapeID
+from .routes.tapes_search import TapesSearch
 
 # API Route Definitions
 api.add_resource(Home, '/api')
 api.add_resource(Tapes, '/api/tapes')
+api.add_resource(TapesSearch, '/api/tapes/search/<string:searchTerm>')
 api.add_resource(Tape, '/api/tape')
 api.add_resource(TapeID, '/api/tape/<string:id>')
