@@ -47,6 +47,9 @@ class Tapes(Resource):
     def patch(self):
         pass
 
+    def delete(self):
+        pass
+
 def query_db_with_search(page, per_page, searchTerm: str):
 
     try:
@@ -95,18 +98,29 @@ def query_db_no_search(page, per_page):
         return EMPTY_STATUS_CODE
     
 def batch_upload_tapes(records: list):
+    results = []
+
+    if records == []:
+        return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+    
+    for record in records:
+        results.append(TapeMedia(media_id=record['media_id'],site=record['site'],location=record['location'],compartment=record['compartment']))
+                  
+    db.session.add_all(results)
+    db.session.commit()
+
+    db_results = [result.to_basic_json() for result in results]
+    return {
+        'result' : db_results,
+        'additional': {
+            'length': len(db_results),
+            'page': 1,
+            'total_pages': 1,
+            'per_page': 1
+        },
+        'message': 'Records were found successfully',
+        'code': 200
+    }
+
+def batch_update_tapes(criteria: str, records: list):
     pass
-    # results = []
-    # db_results = {}
-    # per_page = 1
-    # return {
-    #     'result' : results,
-    #     'additional': {
-    #         'length': len(results),
-    #         'page': db_results.page,
-    #         'total_pages': db_results.pages,
-    #         'per_page': per_page
-    #     },
-    #     'message': 'Records were found successfully',
-    #     'code': 200
-    # }
