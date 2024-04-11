@@ -8,8 +8,13 @@ paramParser.add_argument('page', type=int, location='args')
 paramParser.add_argument('per_page', type=int, location='args')
 paramParser.add_argument('search', type=str, location='args')
 
-putParser = reqparse.RequestParser()
-putParser.add_argument('records', required=True, type=list, location='json')
+pdParser = reqparse.RequestParser()
+pdParser.add_argument('records', required=True, type=list, location='json')
+
+patchParser = reqparse.RequestParser()
+patchParser.add_argument('update_field', required=True, type=str, location='json')
+patchParser.add_argument('update_value', required=True, type=str, location='json')
+patchParser.add_argument('records', required=True, type=list, location='json')
 
 class Tapes(Resource):
     def get(self):
@@ -33,7 +38,7 @@ class Tapes(Resource):
     
     def put(self):
         try:
-            params = putParser.parse_args()
+            params = pdParser.parse_args()
 
             if params['records'] is None or params['records'] == []:
                 return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
@@ -45,10 +50,38 @@ class Tapes(Resource):
             return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
 
     def patch(self):
-        pass
+        try:
+            params = patchParser.parse_args()
+
+            if params['records'] is None or params['records'] == []:
+                return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+            
+            if params['update_field'] or params['update_field'] == '':
+                field = params['update_field']
+                return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+            
+            if params['update_value'] or params['update_value'] == '':
+                value = params['update_value']
+                return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+
+            result = batch_update_tapes(field, value, params['records'])
+
+            return result , result['code']
+        except:
+            return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
 
     def delete(self):
-        pass
+        try:
+            params = pdParser.parse_args()
+
+            if params['records'] is None or params['records'] == []:
+                return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
+
+            result = batch_delete_tapes(params['records'])
+
+            return result , result['code']
+        except:
+            return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
 
 def query_db_with_search(page, per_page, searchTerm: str):
 
@@ -122,5 +155,8 @@ def batch_upload_tapes(records: list):
         'code': 200
     }
 
-def batch_update_tapes(criteria: str, records: list):
+def batch_update_tapes(field: str, value: str, records: list):
+    pass
+
+def batch_delete_tapes(ids: list):
     pass
