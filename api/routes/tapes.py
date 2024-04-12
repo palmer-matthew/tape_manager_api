@@ -157,6 +157,18 @@ def batch_upload_tapes(records: list):
 
 def batch_update_tapes(field: str, value: str, records: list):
     pass
+    # db.session.commit()
+    # return {
+    #     'result' : db_results,
+    #     'additional': {
+    #         'length': len(db_results),
+    #         'page': 1,
+    #         'total_pages': 1,
+    #         'per_page': 1
+    #     },
+    #     'message': 'Records were found successfully',
+    #     'code': 200
+    # }
 
 def batch_delete_tapes(ids: list):
     pass
