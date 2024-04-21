@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from api import db
 from api.models.tape import TapeMedia
+from sqlalchemy import update
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, EMPTY_STATUS_CODE
 
 paramParser = reqparse.RequestParser()
@@ -56,7 +57,8 @@ class Tapes(Resource):
             if params['records'] is None or params['records'] == []:
                 return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
             
-            if params['update_field'] or params['update_field'] == '':
+            valid_list = ['media_id', 'site', 'location', 'compartment']
+            if params['update_field'] in valid_list:
                 field = params['update_field']
                 return BAD_STATUS_CODE, BAD_STATUS_CODE['code']
             
@@ -155,20 +157,41 @@ def batch_upload_tapes(records: list):
         'code': 200
     }
 
+def create_mappings(records, field, value):
+    mappings = []
+    for record in records:
+        item = TapeMedia.query.filter_by(media_id = record).first()
+        if item is None:
+            continue
+        else:
+            mappings.append({
+                "id": item.id,
+                field : value,
+                'media_id': record
+            })
+    return mappings
+
+
 def batch_update_tapes(field: str, value: str, records: list):
-    pass
-    # db.session.commit()
-    # return {
-    #     'result' : db_results,
-    #     'additional': {
-    #         'length': len(db_results),
-    #         'page': 1,
-    #         'total_pages': 1,
-    #         'per_page': 1
-    #     },
-    #     'message': 'Records were found successfully',
-    #     'code': 200
-    # }
+
+    update_list = create_mappings(records, field, value)
+
+    db.session.bulk_update_mappings(TapeMedia, update_list)
+    db.session.commit()
+
+    updated_list = [item['media_id'] for item in update_list]
+
+    return {
+        'result' : updated_list,
+        'additional': {
+            'length': len(updated_list),
+            'page': 1,
+            'total_pages': 1,
+            'per_page': 1
+        },
+        'message': 'Records were updated successfully',
+        'code': 200
+    }
 
 def batch_delete_tapes(ids: list):
     pass
