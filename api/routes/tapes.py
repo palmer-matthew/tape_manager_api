@@ -194,4 +194,21 @@ def batch_update_tapes(field: str, value: str, records: list):
     }
 
 def batch_delete_tapes(ids: list):
-    pass
+    deleted_records = []
+    
+    for id in ids:
+        TapeMedia.query.filter_by(media_id = id).delete()
+        deleted_records.append(deleted_records)
+    db.session.commit()
+
+    return {
+        'result' : deleted_records,
+        'additional': {
+            'length': len(deleted_records),
+            'page': 1,
+            'total_pages': 1,
+            'per_page': 1
+        },
+        'message': 'Records were updated successfully',
+        'code': 200
+    }
