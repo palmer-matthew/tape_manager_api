@@ -1,7 +1,9 @@
-from flask_restful import Resource
+from flask_restx import Resource
+from api import api
 from api.models.tape import TapeMedia
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, EMPTY_STATUS_CODE
 
+@api.route('/api/tapes/search/<string:searchTerm>')
 class TapesSearch(Resource):
     def get(self, searchTerm):
         try:

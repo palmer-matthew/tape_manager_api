@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse
-from api import db
+from flask_restx import Resource, reqparse
+from api import db, api
 from api.models.tape import TapeMedia
 from sqlalchemy import update
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, EMPTY_STATUS_CODE
@@ -17,6 +17,7 @@ patchParser.add_argument('update_field', required=True, type=str, location='json
 patchParser.add_argument('update_value', required=True, type=str, location='json')
 patchParser.add_argument('records', required=True, type=list, location='json')
 
+@api.route('/api/tapes')
 class Tapes(Resource):
     def get(self):
         try:

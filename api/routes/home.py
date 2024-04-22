@@ -1,5 +1,7 @@
-from flask_restful import Resource
+from flask_restx import Resource
+from api import api
 
+@api.route('/api/')
 class Home(Resource):
     def get(self):
         return { 

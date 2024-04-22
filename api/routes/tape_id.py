@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse
-from api import db
+from flask_restx import Resource, reqparse
+from api import api, db
 from api.models.tape import TapeMedia
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, NO_CONTENT_CODE, NO_UPDATE_CONTENT_CODE
 
@@ -10,6 +10,7 @@ paramParser.add_argument('site', type=str, location='json')
 paramParser.add_argument('location', type=str, location='json')
 paramParser.add_argument('compartment', type=str, location='json')
 
+@api.route('/api/tape/<string:id>')
 class TapeID(Resource):
     def get(self, id):
         try:
