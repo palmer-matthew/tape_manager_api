@@ -1,7 +1,6 @@
 from flask_restx import Resource, reqparse
 from api import db, api
 from api.models.tape import TapeMedia
-from sqlalchemy import update
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, EMPTY_STATUS_CODE
 
 paramParser = reqparse.RequestParser()
