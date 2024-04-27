@@ -10,7 +10,14 @@ from .config import DevApiConfig, ProdApiConfig
 
 # App and API Initialization
 app = Flask(__name__)
-app.config.from_object(DevApiConfig)
+
+# Change SQLAlchemy dialect if it is postgres
+configuration = DevApiConfig
+if configuration.SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
+    configuration.SQLALCHEMY_DATABASE_URI = configuration.SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
+
+#Resume building Config
+app.config.from_object(configuration)
 db = SQLAlchemy(app)
 api = Api(app)
 migrate = Migrate(app, db)
