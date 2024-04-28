@@ -2,16 +2,27 @@ from flask_restx import Resource, reqparse
 from api import api, db
 from api.models.tape import TapeMedia
 from .http_codes import INTERNAL_ERROR_STATUS_CODE, BAD_STATUS_CODE, NO_CONTENT_CODE, NO_UPDATE_CONTENT_CODE
+from ..utils.swagger import tapeid_patch
 
 paramParser = reqparse.RequestParser()
-paramParser.add_argument('update', required=True, type=list, location='json')
-paramParser.add_argument('id', type=str, location='json')
-paramParser.add_argument('site', type=str, location='json')
-paramParser.add_argument('location', type=str, location='json')
-paramParser.add_argument('compartment', type=str, location='json')
+paramParser.add_argument('update', required=True, type=list, location='json', trim=True)
+paramParser.add_argument('id', type=str, location='json', trim=True)
+paramParser.add_argument('site', type=str, location='json', trim=True)
+paramParser.add_argument('location', type=str, location='json', trim=True)
+paramParser.add_argument('compartment', type=str, location='json', trim=True)
 
 @api.route('/api/tape/<string:id>')
+@api.doc(params={
+    'id': 'Media ID for a Tape Record'
+})
 class TapeID(Resource):
+    # @api.doc(responses={
+    #     200: 'Record was retrieved successfully',
+    #     204: NO_CONTENT_CODE['message'],
+    #     400: BAD_STATUS_CODE['message'],
+    #     500: INTERNAL_ERROR_STATUS_CODE['message']
+    # })
+    @api.response(200, 'Record was retrieved successfully')
     def get(self, id):
         try:
             if id is None:
@@ -23,6 +34,13 @@ class TapeID(Resource):
         except:
             return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
     
+    @api.doc(responses={
+        200: 'Record was retrieved successfully',
+        204: NO_UPDATE_CONTENT_CODE['message'],
+        400: BAD_STATUS_CODE['message'],
+        500: INTERNAL_ERROR_STATUS_CODE['message']
+    })
+    @api.expect(tapeid_patch)
     def patch(self, id):
         try:
             if id is None:
@@ -39,6 +57,12 @@ class TapeID(Resource):
         except:
             return INTERNAL_ERROR_STATUS_CODE, INTERNAL_ERROR_STATUS_CODE['code']
     
+    @api.doc(responses={
+        200: 'Record was retrieved successfully',
+        204: NO_CONTENT_CODE['message'],
+        400: BAD_STATUS_CODE['message'],
+        500: INTERNAL_ERROR_STATUS_CODE['message']
+    })
     def delete(self,id):
         try:
             if id is None:
@@ -58,7 +82,7 @@ def get_tape_media(id):
     return {
         'result' : db_result.to_json(),
         'additional': {},
-        'message': 'No records were found',
+        'message': 'Record was retrieved successfully',
         'code': 200
     }
 
