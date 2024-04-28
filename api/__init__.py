@@ -19,7 +19,7 @@ if configuration.SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
 #Resume building Config
 app.config.from_object(configuration)
 db = SQLAlchemy(app)
-api = Api(app)
+api = Api(app,base_url='/api',doc='/docs/swagger')
 migrate = Migrate(app, db)
 
 # tape_manager = api.namespace('tape_manager', description='Tape Manager API')
